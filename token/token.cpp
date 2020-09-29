@@ -118,11 +118,11 @@ void token::issue(eosio::name to, eosio::asset quantity, std::string memo)
   eosio::check(sym.is_valid(), "invalid symbol name");
   eosio::check(memo.size() <= 256, "memo has more than 256 bytes");
 
-  stats statstable(_self, sym.code().raw());
+  stats statstable(get_self(), sym.code().raw());
   const auto &st = statstable.get(sym.code().raw(), "token with given symbol does not exist, create token before issue");
 
   // Require auth from the bespiral community contract
-  require_auth(_self);
+  require_auth(get_self());
 
   eosio::check(quantity.is_valid(), "invalid quantity");
   eosio::check(quantity.amount > 0, "must issue positive quantity");
@@ -141,7 +141,7 @@ void token::issue(eosio::name to, eosio::asset quantity, std::string memo)
 
     SEND_INLINE_ACTION(*this,
                        transfer,
-                       {_self, eosio::name{"active"}},
+                       {get_self(), eosio::name{"active"}},
                        {st.issuer, to, quantity, memo});
   }
 }
@@ -157,14 +157,14 @@ void token::transfer(eosio::name from, eosio::name to, eosio::asset quantity, st
   }
   else
   {
-    require_auth(_self);
+    require_auth(get_self());
   }
 
   eosio::check(is_account(to), "destination account doesn't exists");
 
   // Find symbol stats
   auto sym = quantity.symbol;
-  stats statstable(_self, sym.code().raw());
+  stats statstable(get_self(), sym.code().raw());
   const auto &st = statstable.get(sym.code().raw(), "token with given symbol doesn't exists");
 
   // Validate quantity and memo

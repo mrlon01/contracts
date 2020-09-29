@@ -141,9 +141,6 @@ void cambiatus::netlink(eosio::asset cmm_asset, eosio::name inviter, eosio::name
   if (inviter == new_user)
     return;
 
-  eosio::print( "INVITER REWARD:", cmm.inviter_reward.amount);
-  eosio::print( "INVITED REWARD:", cmm.invited_reward.amount);
-
   // Send inviter reward
   if (cmm.inviter_reward.amount > 0)
   {
@@ -171,7 +168,7 @@ void cambiatus::netlink(eosio::asset cmm_asset, eosio::name inviter, eosio::name
   }
   else
   {
-    eosio::action init_account = eosio::action(eosio::permission_level{inviter, eosio::name{"active"}}, // Permission
+    eosio::action init_account = eosio::action(eosio::permission_level{currency_account, eosio::name{"active"}}, // Permission
                                                currency_account,                                        // Account
                                                eosio::name{"initacc"},                                  // Action
                                                std::make_tuple(cmm.invited_reward.symbol, new_user, inviter));

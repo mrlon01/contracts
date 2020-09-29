@@ -141,8 +141,8 @@ void cambiatus::netlink(eosio::asset cmm_asset, eosio::name inviter, eosio::name
   if (inviter == new_user)
     return;
 
-print( "INVITER REWARD:", cmm.inviter_reward.amount);
-print( "INVITED REWARD:", cmm.invited_reward.amount);
+  eosio::print( "INVITER REWARD:", cmm.inviter_reward.amount);
+  eosio::print( "INVITED REWARD:", cmm.invited_reward.amount);
 
   // Send inviter reward
   if (cmm.inviter_reward.amount > 0)

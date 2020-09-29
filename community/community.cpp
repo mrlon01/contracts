@@ -135,9 +135,14 @@ void cambiatus::netlink(eosio::asset cmm_asset, eosio::name inviter, eosio::name
   // Notify user
   require_recipient(new_user);
 
+
+
   // Skip rewards if inviter and invited is the same, may happen during community creation
   if (inviter == new_user)
     return;
+
+print( "INVITER REWARD:", cmm.inviter_reward.amount);
+print( "INVITED REWARD:", cmm.invited_reward.amount);
 
   // Send inviter reward
   if (cmm.inviter_reward.amount > 0)

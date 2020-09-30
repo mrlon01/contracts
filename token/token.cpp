@@ -138,12 +138,18 @@ void token::issue(eosio::name to, eosio::asset quantity, std::string memo)
   if (to != st.issuer)
   {
     require_recipient(st.issuer);
-
-    SEND_INLINE_ACTION(*this,
+    eosio::action transfer = eosio::action(eosio::permission_level{get_self(),eosio::name{"active"}},
+					get_self(),
+					eosio::name{"transfer"},
+					std::make_tuple(st.issuer, to, quantity, memo));
+    transfer.send();
+  /* SEND_INLINE_ACTION(*this,
                        transfer,
                        {get_self(), eosio::name{"active"}},
                        {st.issuer, to, quantity, memo});
+  */
   }
+
 }
 
 void token::transfer(eosio::name from, eosio::name to, eosio::asset quantity, std::string memo)
